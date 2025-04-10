@@ -98,9 +98,9 @@ if st.session_state.page == 'A':
     st.markdown('<p class="big-header center-text">Anh Ty, iu, ơi...</p>', unsafe_allow_html=True)
     
     # Next button
-    col1, col2, col3 = st.columns([2, 2, 1])
-    with col3:
-        if st.button("Next"):
+    col_left, col_right = st.columns([1, 1])
+    with col_right:
+        if st.button("Next", key="next_from_a"):
             navigate_to('B')
 
 # Page B - Choice Page
@@ -120,6 +120,12 @@ elif st.session_state.page == 'B':
         st.markdown('<div class="number-box center-text">2</div>', unsafe_allow_html=True)
         if st.button("Next to Option 2"):
             navigate_to('2')
+    
+    # Navigation buttons at the bottom
+    col_left, col_right = st.columns([1, 1])
+    with col_left:
+        if st.button("Return", key="return_from_b"):
+            navigate_to('A')
 
 # Page 1 - Write Wishes
 elif st.session_state.page == '1':
@@ -129,16 +135,14 @@ elif st.session_state.page == '1':
     # Text area for wishes
     wishes = st.text_area("Type your wishes here:", height=100, key="wish_input")
     
-    col1, col2 = st.columns([3, 1])
-    
-    # Return to B button
-    with col2:
-        if st.button("Return"):
+    # Navigation buttons at the bottom
+    col_left, col_right = st.columns([1, 1])
+    with col_left:
+        if st.button("Return", key="return_from_1"):
             navigate_to('B')
-    
-    # Submit button for wishes
-    if st.button("Next"):
-        save_wish(wishes)
+    with col_right:
+        if st.button("Next", key="next_from_1"):
+            save_wish(wishes)
 
 # Page 2 - Password Page
 elif st.session_state.page == '2':
@@ -148,16 +152,17 @@ elif st.session_state.page == '2':
     # Password input
     password = st.text_input("Enter password:", type="password")
     
-    # Check password button
-    if st.button("Next"):
-        if check_password(password):
-            navigate_to('birthday')
-        else:
-            st.error("Incorrect password. Try again!")
-    
-    # Back button
-    if st.button("Return"):
-        navigate_to('B')
+    # Navigation buttons at the bottom
+    col_left, col_right = st.columns([1, 1])
+    with col_left:
+        if st.button("Return", key="return_from_2"):
+            navigate_to('B')
+    with col_right:
+        if st.button("Next", key="next_from_2"):
+            if check_password(password):
+                navigate_to('birthday')
+            else:
+                st.error("Incorrect password. Try again!")
 
 # Birthday Page
 elif st.session_state.page == 'birthday':
@@ -218,6 +223,8 @@ elif st.session_state.page == 'birthday':
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Return to start button
-    if st.button("Return"):
-        navigate_to('A')
+    # Return button at the bottom left
+    col_left, col_right = st.columns([1, 1])
+    with col_left:
+        if st.button("Return", key="return_from_birthday"):
+            navigate_to('A')
