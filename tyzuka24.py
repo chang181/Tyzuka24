@@ -18,7 +18,7 @@ st.markdown("""
         border-radius: 10px;
     }
     .stButton button {
-        width: 100%;
+        width: 120px;
         border-radius: 5px;
         font-size: 18px;
         padding: 10px;
@@ -66,6 +66,16 @@ st.markdown("""
         border-radius: 10px;
         border: 3px solid #f0bb33;
         text-align: center;
+    }
+    .user-wish {
+        font-style: italic;
+        font-size: 18px;
+        border-left: 4px solid #f0bb33;
+        padding-left: 15px;
+        margin: 20px 0;
+        background-color: #fffaf0;
+        padding: 15px;
+        border-radius: 8px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -180,29 +190,35 @@ elif st.session_state.page == 'birthday':
     
     # Display wishes if any
     if st.session_state.wishes:
-        st.markdown(f"<h3>Your wish:</h3>", unsafe_allow_html=True)
-        st.markdown(f"<p><i>\"{st.session_state.wishes}\"</i></p>", unsafe_allow_html=True)
+        st.markdown("<h3>Your Birthday Wish:</h3>", unsafe_allow_html=True)
+        st.markdown(f'<div class="user-wish">{st.session_state.wishes}</div>', unsafe_allow_html=True)
     
     st.markdown("<h3>Wishing you a wonderful day filled with happiness and joy!</h3>", unsafe_allow_html=True)
     st.markdown("<p>May all your dreams come true and may this year bring you success in all your endeavors.</p>", unsafe_allow_html=True)
     
     # Display the birthday image
     try:
-        # Look for images in the current directory
-        image_extensions = ['.jpg', '.jpeg', '.png', '.gif']
-        image_files = []
-        
-        for file in os.listdir('.'):
-            if any(file.lower().endswith(ext) for ext in image_extensions):
-                image_files.append(file)
-        
-        if image_files:
+        # First try to load the specific hpbd.jpg image
+        if os.path.exists('hpbd.jpg'):
+            img = Image.open('hpbd.jpg')
             st.markdown("<h3>Your special birthday picture:</h3>", unsafe_allow_html=True)
-            for img_file in image_files:
-                img = Image.open(img_file)
-                st.image(img, caption=f"Birthday Image: {img_file}", use_column_width=True)
+            st.image(img, caption="Happy Birthday!", use_column_width=True)
         else:
-            st.info("No birthday images found in the current directory. Add an image file (JPG, PNG, or GIF) to the same folder as this script.")
+            # If specific image not found, look for other images
+            image_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+            image_files = []
+            
+            for file in os.listdir('.'):
+                if any(file.lower().endswith(ext) for ext in image_extensions):
+                    image_files.append(file)
+            
+            if image_files:
+                st.markdown("<h3>Your special birthday picture:</h3>", unsafe_allow_html=True)
+                for img_file in image_files:
+                    img = Image.open(img_file)
+                    st.image(img, caption=f"Birthday Image: {img_file}", use_column_width=True)
+            else:
+                st.info("No birthday images found in the current directory.")
     except Exception as e:
         st.error(f"Error loading image: {e}")
     
