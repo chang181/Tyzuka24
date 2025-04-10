@@ -8,7 +8,8 @@ st.set_page_config(
     page_title="Tyzuka 24+",
     page_icon="🎂",
     layout="centered",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
+    menu_items=None
 )
 
 # Define CSS styles with emerald green color theme
