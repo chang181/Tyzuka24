@@ -1,5 +1,7 @@
 import streamlit as st
 import time
+import os
+from PIL import Image
 
 # Set page configuration
 st.set_page_config(
@@ -98,7 +100,7 @@ if st.session_state.page == 'A':
     # Next button
     col1, col2, col3 = st.columns([2, 2, 1])
     with col3:
-        if st.button("Next Button"):
+        if st.button("Next"):
             navigate_to('B')
 
 # Page B - Choice Page
@@ -111,12 +113,12 @@ elif st.session_state.page == 'B':
     
     with col2:
         st.markdown('<div class="number-box center-text">1</div>', unsafe_allow_html=True)
-        if st.button("Option 1"):
+        if st.button("Next to Option 1"):
             navigate_to('1')
     
     with col3:
         st.markdown('<div class="number-box center-text">2</div>', unsafe_allow_html=True)
-        if st.button("Option 2"):
+        if st.button("Next to Option 2"):
             navigate_to('2')
 
 # Page 1 - Write Wishes
@@ -131,12 +133,11 @@ elif st.session_state.page == '1':
     
     # Return to B button
     with col2:
-        st.markdown('<p>Return to</p>', unsafe_allow_html=True)
-        if st.button("B"):
+        if st.button("Return"):
             navigate_to('B')
     
     # Submit button for wishes
-    if st.button("Submit Wish"):
+    if st.button("Next"):
         save_wish(wishes)
 
 # Page 2 - Password Page
@@ -148,14 +149,14 @@ elif st.session_state.page == '2':
     password = st.text_input("Enter password:", type="password")
     
     # Check password button
-    if st.button("Open the gift"):
+    if st.button("Next"):
         if check_password(password):
             navigate_to('birthday')
         else:
             st.error("Incorrect password. Try again!")
     
     # Back button
-    if st.button("Back to choices"):
+    if st.button("Return"):
         navigate_to('B')
 
 # Birthday Page
@@ -180,6 +181,26 @@ elif st.session_state.page == 'birthday':
     st.markdown("<h3>Wishing you a wonderful day filled with happiness and joy!</h3>", unsafe_allow_html=True)
     st.markdown("<p>May all your dreams come true and may this year bring you success in all your endeavors.</p>", unsafe_allow_html=True)
     
+    # Display the birthday image
+    try:
+        # Look for images in the current directory
+        image_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+        image_files = []
+        
+        for file in os.listdir('.'):
+            if any(file.lower().endswith(ext) for ext in image_extensions):
+                image_files.append(file)
+        
+        if image_files:
+            st.markdown("<h3>Your special birthday picture:</h3>", unsafe_allow_html=True)
+            for img_file in image_files:
+                img = Image.open(img_file)
+                st.image(img, caption=f"Birthday Image: {img_file}", use_column_width=True)
+        else:
+            st.info("No birthday images found in the current directory. Add an image file (JPG, PNG, or GIF) to the same folder as this script.")
+    except Exception as e:
+        st.error(f"Error loading image: {e}")
+    
     # Birthday cake ASCII art
     st.markdown("""
     ```
@@ -198,5 +219,5 @@ elif st.session_state.page == 'birthday':
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Return to start button
-    if st.button("Return to Start"):
+    if st.button("Return"):
         navigate_to('A')
