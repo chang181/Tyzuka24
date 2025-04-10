@@ -364,9 +364,9 @@ elif st.session_state.page == 'birthday':
     
     # Display the birthday image
     try:
-        # First try to load the specific hpbd.jpg image
-        if os.path.exists('hpbd.jpg'):
-            img = Image.open('hpbd.jpg')
+        # First try to load the specific tyzuka24.jpg image
+        if os.path.exists('tyzuka24.jpg'):
+            img = Image.open('tyzuka24.jpg')
             st.markdown(page_content['birthday']['image_header'], unsafe_allow_html=True)
             # st.image(img, caption="Happy Birthday!", use_column_width=True)
         else:
